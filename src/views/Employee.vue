@@ -8,8 +8,17 @@
     </n-form-item>
     <n-form-item>
       <n-button @click="showModal = true"> 添加 </n-button>
-      <n-modal v-model:show="showModal" preset="dialog" title="添加用户" content="确认添加吗?" positive-text="确认"
-        negative-text="算了" @positive-click="submitCallback" @negative-click="cancelCallback" />
+      <n-modal v-model:show="showModal" preset="dialog" title="添加用户" :content="modalContent" positive-text="确认"
+        negative-text="算了" @positive-click="submitCallback" @negative-click="cancelCallback">
+        <n-form ref="addFormRef" :model="newEmployee" :rules="addFormRules">
+          <n-form-item label="名字" path="name">
+            <n-input v-model:value="newEmployee.name" />
+          </n-form-item>
+          <n-form-item label="性别" path="gender">
+            <n-select v-model:value="newEmployee.gender" :options="genderOptions" />
+          </n-form-item>
+        </n-form>
+      </n-modal>
     </n-form-item>
   </n-form>
   <n-data-table :columns="columns" :data="updateData" />
@@ -18,54 +27,17 @@
 <style scoped></style>
 
 <script>
-import { defineComponent, ref, h, onMounted } from "vue";
-import { NButton, useMessage } from "naive-ui";
+import { defineComponent, ref, h } from "vue";
+import { NButton, useMessage, NSelect } from "naive-ui";
 
 let data = ref([
-  {
-    id: 1,
-    name: "李冠",
-    gender: "男",
-  },
-  {
-    id: 2,
-    name: "陈文博",
-    gender: "男",
-  },
-  {
-    id: 3,
-    name: "华新武",
-    gender: "男",
-  },
-  {
-    id: 4,
-    name: "田建松",
-    gender: "男",
-  },
+  { id: 1, name: "李冠", gender: "男" },
+  { id: 2, name: "陈文博", gender: "男" },
+  { id: 3, name: "华新武", gender: "男" },
+  { id: 4, name: "田建松", gender: "男" },
 ]);
 
-let updateData = ref([
-  {
-    id: 1,
-    name: "李冠",
-    gender: "男",
-  },
-  {
-    id: 2,
-    name: "陈文博",
-    gender: "男",
-  },
-  {
-    id: 3,
-    name: "华新武",
-    gender: "男",
-  },
-  {
-    id: 4,
-    name: "田建松",
-    gender: "男",
-  },
-]);
+let updateData = ref([...data.value]);
 
 let keyWord = ref("");
 
@@ -73,18 +45,9 @@ const message = useMessage();
 
 function createColumns() {
   return [
-    {
-      title: "编号",
-      key: "id",
-    },
-    {
-      title: "名字",
-      key: "name",
-    },
-    {
-      title: "性别",
-      key: "gender",
-    },
+    { title: "编号", key: "id" },
+    { title: "名字", key: "name" },
+    { title: "性别", key: "gender" },
     {
       title: "操作",
       key: "actions",
@@ -106,18 +69,40 @@ function createColumns() {
 
 function del(row) {
   const index = data.value.findIndex((emp) => emp.id == row.id);
-  index !== -1 ? data.value.splice(index, 1) : "";
-  updateData.value = data.value;
+  if (index !== -1) data.value.splice(index, 1);
+  updateData.value = [...data.value];
 }
 
-function search(row) {
+function search() {
   updateData.value = data.value.filter((item) => item.name.includes(keyWord.value));
 }
 
-function add() { }
-
 export default defineComponent({
   setup() {
+    const showModal = ref(false);
+    const newEmployee = ref({ name: "", gender: "" });
+    const addFormRef = ref(null);
+    const addFormRules = {
+      name: [{ required: true, message: "请输入名字", trigger: "blur" }],
+      gender: [{ required: true, message: "请选择性别", trigger: "change" }],
+    };
+    const genderOptions = ref([
+      { label: "男", value: "男" },
+      { label: "女", value: "女" },
+    ]);
+
+    function submitCallback() {
+      const id = data.value.length ? data.value[data.value.length - 1].id + 1 : 1;
+      data.value.push({ id, ...newEmployee.value });
+      updateData.value = [...data.value];
+      showModal.value = false;
+      message.success("添加成功");
+    }
+
+    function cancelCallback() {
+      message.success("取消");
+    }
+
     return {
       data,
       columns: createColumns(),
@@ -125,13 +110,13 @@ export default defineComponent({
       keyWord,
       updateData,
       message,
-      showModal: ref(false),
-      cancelCallback() {
-        message.success("Cancel");
-      },
-      submitCallback() {
-        message.success("Submit");
-      },
+      showModal,
+      newEmployee,
+      addFormRef,
+      addFormRules,
+      genderOptions,
+      submitCallback,
+      cancelCallback,
     };
   },
 });
