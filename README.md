@@ -17,8 +17,7 @@ The Employee Management System is built using Vue 3 and Naive UI. It aims to sim
 ## 安装 (Installation)
 
 ### 前提条件 (Prerequisites)
-- Node.js (version x.x.x)
-- npm (version x.x.x)
+- Node.js (version 22.4.1)
 
 ### 步骤 (Steps)
 ```sh
