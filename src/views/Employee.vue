@@ -1,12 +1,5 @@
 <template>
-  <n-form
-    ref="formRef"
-    inline
-    :label-width="80"
-    :model="formValue"
-    :rules="rules"
-    :size="size"
-  >
+  <n-form ref="formRef" inline :label-width="80" :model="formValue" :rules="rules" :size="size">
     <n-form-item label="请输入您想搜索的姓名" path="">
       <n-input placeholder="输入您想搜索的姓名" v-model:value="keyWord" />
     </n-form-item>
@@ -15,16 +8,8 @@
     </n-form-item>
     <n-form-item>
       <n-button @click="showModal = true"> 添加 </n-button>
-      <n-modal
-        v-model:show="showModal"
-        preset="dialog"
-        title="添加用户"
-        content="确认添加吗?"
-        positive-text="确认"
-        negative-text="算了"
-        @positive-click="submitCallback"
-        @negative-click="cancelCallback"
-      />
+      <n-modal v-model:show="showModal" preset="dialog" title="添加用户" content="确认添加吗?" positive-text="确认"
+        negative-text="算了" @positive-click="submitCallback" @negative-click="cancelCallback" />
     </n-form-item>
   </n-form>
   <n-data-table :columns="columns" :data="updateData" />
@@ -129,7 +114,7 @@ function search(row) {
   updateData.value = data.value.filter((item) => item.name.includes(keyWord.value));
 }
 
-function add() {}
+function add() { }
 
 export default defineComponent({
   setup() {
