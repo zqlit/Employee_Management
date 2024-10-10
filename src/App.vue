@@ -18,7 +18,7 @@ const menuOptions = [
             path: "/employee",
           },
         },
-        { default: () => "员工管理" }
+        { default: () => "客户管理" }
       ),
     key: "go-to-employee",
   },
@@ -31,7 +31,7 @@ const menuOptions = [
             path: "/customer",
           },
         },
-        { default: () => "客户管理" }
+        { default: () => "送水工管理" }
       ),
     key: "go-to-customer",
   },
@@ -44,7 +44,7 @@ const menuOptions = [
             path: "/product",
           },
         },
-        { default: () => "商品管理" }
+        { default: () => "送水历史管理" }
       ),
     key: "go-to-product",
   },
@@ -57,7 +57,7 @@ const menuOptions = [
             path: "/order",
           },
         },
-        { default: () => "订单管理" }
+        { default: () => "统计送水工工资" }
       ),
     key: "go-to-order",
   },
@@ -70,7 +70,7 @@ const menuOptions = [
             path: "/fare",
           },
         },
-        { default: () => "运费管理" }
+        { default: () => "未送水送水工工资统计" }
       ),
     key: "go-to-fare",
   },
