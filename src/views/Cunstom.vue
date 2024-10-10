@@ -40,6 +40,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-/* Add any custom styles here */
-</style></n-page>
+<style scoped></style></n-page>
